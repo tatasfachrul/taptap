@@ -7,8 +7,6 @@ import {
   ImageBackground,
   Animated
 } from "react-native";
-import ContainerOverflow from "react-native-view-overflow";
-import Icon from "react-native-vector-icons/FontAwesome";
 import HeaderScreen from "./headerScreen";
 import SoundPlayer from "react-native-sound-player";
 import axios from "axios";
@@ -19,7 +17,7 @@ export default class MainApp extends Component {
     this.springValue = new Animated.Value(1);
   }
 
-  mainImage = require("../assets/shark.png");
+  
   backImage = require("../assets/ocean.jpg");
 
   // rule = [
@@ -55,22 +53,13 @@ export default class MainApp extends Component {
     combos: 0,
     highestCombo: 0,
     length_click: 0,
-    user: 1
-    // btn1_length: 0,
-    // btn1_length2: 1,
-    // btn2_length: 0,
-    // btn2_length2: 1
+    user: 1,
+    mainImage: require("../assets/shark.png")
+    
   };
 
-  async componentDidMount() {
-    const apiUrl =
-      "http://127.0.0.1:3333/api/v1/leaderboard/" + this.state.user;
-
-    const res = await axios.post(apiUrl);
-    this.setState({});
-  }
-
   combo_function() {
+    this.setState({ length_click: this.state.length_click + 1 });
     if (this.state.length_click + 1 == this.rule.length) {
       this.setState({ combos: this.state.combos + 1 });
       this.setState({ length_click: 0 });
@@ -79,6 +68,17 @@ export default class MainApp extends Component {
     if (this.state.combos >= this.state.highestCombo) {
       this.setState({ highestCombo: this.state.combos });
     }
+
+    const apiURL = 'http://192.168.43.208:3333/api/v1/leaderboard/' + 1
+    data_update = {
+       "highestCombo": this.state.highestCombo     
+    }
+    config = {
+      header: {
+        'Content-Type': 'application/json'
+      }
+    }
+    axios.patch(apiURL, data_update, config)
   }
 
   combo_stop() {
@@ -89,16 +89,12 @@ export default class MainApp extends Component {
 
   btn1() {
     if (this.rule[this.state.length_click] == 1) {
-      this.setState({ length_click: this.state.length_click + 1 });
-
       this.combo_function();
-
       try {
         SoundPlayer.playSoundFile("met", "mp3");
       } catch (e) {
         alert("canot play", e);
       }
-
       this.spring();
     } else {
       this.combo_stop();
@@ -107,8 +103,6 @@ export default class MainApp extends Component {
 
   btn2() {
     if (this.rule[this.state.length_click] == 2) {
-      this.setState({ length_click: this.state.length_click + 1 });
-
       this.combo_function();
       try {
         SoundPlayer.playSoundFile("al", "mp3");
@@ -123,8 +117,6 @@ export default class MainApp extends Component {
 
   btn3() {
     if (this.rule[this.state.length_click] == 3) {
-      this.setState({ length_click: this.state.length_click + 1 });
-
       this.combo_function();
       try {
         SoundPlayer.playSoundFile("shark", "mp3");
@@ -139,8 +131,6 @@ export default class MainApp extends Component {
 
   btn4() {
     if (this.rule[this.state.length_click] == 4) {
-      this.setState({ length_click: this.state.length_click + 1 });
-
       this.combo_function();
       try {
         SoundPlayer.playSoundFile("du", "mp3");
@@ -163,8 +153,6 @@ export default class MainApp extends Component {
 
   render() {
     return (
-      // Use Icon.getImageSource function or using custom icons in the Icon.ToolbarAndroid component.
-
       <View style={{ flex: 1 }}>
         <ImageBackground
           source={this.backImage}
@@ -184,7 +172,7 @@ export default class MainApp extends Component {
           >
             <TouchableOpacity onPress={this.spring.bind(this)}>
               <Animated.Image
-                source={this.mainImage}
+                source={this.state.mainImage}
                 style={{
                   width: 400,
                   height: 380,
@@ -204,18 +192,18 @@ export default class MainApp extends Component {
               paddingBottom: 30
             }}
           >
-            <Text style={{ fontSize: 24, color: "white" }}>
+            <Text style={{ fontSize: 36, color: "red" }}>
               {this.state.combos}
             </Text>
-            <Text style={{ fontSize: 24, color: "red" }}> COMBO!</Text>
+            <Text style={{ fontSize: 36, color: "white" }}> COMBO!</Text>
 
-            <Text note style={{ color: "white" }}>
+            {/* <Text note style={{ color: "white" }}>
               {this.state.highestCombo}
             </Text>
             <Text note style={{ color: "white" }}>
               {" "}
               HIGHEST COMBO!
-            </Text>
+            </Text> */}
           </View>
 
           {/* Button section */}
@@ -223,7 +211,7 @@ export default class MainApp extends Component {
             <View style={{ flex: 1 }} />
             <View style={{ flex: 1 }}>
               <TouchableOpacity
-                style={styles.button}
+                style={styles.button2}
                 onPress={() => this.btn2()}
               >
                 <Text style={{ color: "white" }}>TAL</Text>
@@ -232,7 +220,7 @@ export default class MainApp extends Component {
             <View style={{ flex: 1 }} />
             <View style={{ flex: 1 }}>
               <TouchableOpacity
-                style={styles.button}
+                style={styles.button4}
                 onPress={() => this.btn4()}
               >
                 <Text style={{ color: "white" }}>DU</Text>
@@ -243,16 +231,16 @@ export default class MainApp extends Component {
           <View style={{ flex: 2, flexDirection: "row", paddingBottom: 40 }}>
             <View style={{ flex: 1 }}>
               <TouchableOpacity
-                style={styles.button}
+                style={styles.button1}
                 onPress={() => this.btn1()}
               >
-                <Text style={{ color: "white" }}>ME</Text>
+                <Text style={{ color: "white"}}>ME</Text>
               </TouchableOpacity>
             </View>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 1 }}>
               <TouchableOpacity
-                style={styles.button}
+                style={styles.button3}
                 onPress={() => this.btn3()}
               >
                 <Text style={{ color: "white" }}>SHARK</Text>
@@ -267,14 +255,45 @@ export default class MainApp extends Component {
 }
 
 const styles = StyleSheet.create({
-  button: {
+  button1: {
     alignItems: "center",
-    backgroundColor: "#3867d6",
+    backgroundColor: "#ff9ff3",
+    padding: 10,
+    borderRadius: 100,
+    width: 100,
+    height: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    fontFamily: "Roboto"
+  },
+  button2: {
+    alignItems: "center",
+    backgroundColor: "#1dd1a1",
     padding: 10,
     borderRadius: 100,
     width: 100,
     height: 100,
     alignItems: "center",
     justifyContent: "center"
-  }
+  },
+  button3: {
+    alignItems: "center",
+    backgroundColor: "#ff4d4d",
+    padding: 10,
+    borderRadius: 100,
+    width: 100,
+    height: 100,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  button4: {
+    alignItems: "center",
+    backgroundColor: "#7d5fff",
+    padding: 10,
+    borderRadius: 100,
+    width: 100,
+    height: 100,
+    alignItems: "center",
+    justifyContent: "center"
+  },
 });
