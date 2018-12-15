@@ -6,10 +6,15 @@ import {
   StyleSheet,
   ImageBackground
 } from "react-native";
-import ContainerOverflow from "react-native-view-overflow";
+
 import Icon from "react-native-vector-icons/FontAwesome";
 
 export default class headerScreen extends Component {
+
+  leaderboard(){
+
+  }
+
     render(){
         return(
             <View
@@ -29,21 +34,21 @@ export default class headerScreen extends Component {
                 }}
               >
                 <Text style={{ color: "#dcdde1" }}>Ranking #????</Text>
-                <Icon.Button
+                <TouchableOpacity
                   name="trophy"
-                  backgroundColor="#f39c12"
-                  // onPress={this.loginWithFacebook}
+                  onPress={this.leaderboard}
+                  style={styles.button}
                 >
                   <Text
                     style={{
-                      fontFamily: "Arial",
+                      fontFamily: "Bangle",
                       fontSize: 12,
                       color: "black"
                     }}
                   >
                     Leaderboard
                   </Text>
-                </Icon.Button>
+                </TouchableOpacity>
               </View>
               <View
                 style={{
@@ -102,3 +107,14 @@ export default class headerScreen extends Component {
 
     }
 }
+
+const styles = StyleSheet.create({
+  button: {
+    alignItems: "center",
+    backgroundColor: "#f39c12",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+});

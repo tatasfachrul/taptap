@@ -22,7 +22,7 @@ const slides = [
   {
     key: "somethun",
     title: "Welcome",
-    text: "Welcome to TapTap\nThe most absurd game you've ever played!\n LOL!",
+    text: "Description.\nSay something cool",
     image: require("./assets/1.jpg"),
     imageStyle: styles.image,
     backgroundColor: "#59b2ab"
@@ -30,15 +30,15 @@ const slides = [
   {
     key: "somethun-dos",
     title: "Play",
-    text: "Play the game, and feel the awkwardness",
+    text: "Other cool stuff",
     image: require("./assets/2.jpg"),
     imageStyle: styles.image,
-    backgroundColor: "#e84118"
+    backgroundColor: "#febe29"
   },
   {
     key: "somethun1",
     title: "Rewards",
-    text: "Get Rewards\n\nEVERY WEEK!!!",
+    text: "I'm already out of descriptions\n\nLorem ipsum bla bla bla",
     image: require("./assets/3.jpg"),
     imageStyle: styles.image,
     backgroundColor: "#22bcb5"
@@ -48,7 +48,7 @@ const slides = [
 export default class introApp extends React.Component {
   state = {
     // Set True for MainApp, False for Introduction
-    showRealApp: true
+    showRealApp:false
   };
 
   _onDone = () => {
